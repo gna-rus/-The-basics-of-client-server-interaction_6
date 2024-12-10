@@ -34,6 +34,7 @@ class UnsplashComSpider(scrapy.Spider):
         # yield JobparserItem(author=author, commit=commit, Published_datatime=Published_datatime, url_img=url_img)
 
         # формирование пакеда данных для выгрузки с сайта (loader это что то вроде обертки над items)
+        # Эта механика является альтернативой для  той что выше в коментах. Особеность ее в том что она разгружаешь pipeline за счет применения обработчиков в items
         loader = ItemLoader(item=JobparserItem(), response=response)
         loader.add_xpath('commit', '//p[@class="liDlw"]/text()')
         loader.add_xpath('author', '//a[@class="vGXaw uoMSP kXLw7 R6ToQ JVs7s R6ToQ"]/text()')
