@@ -18,7 +18,7 @@ class UnsplashComSpider(scrapy.Spider):
             yield response.follow(link, callback=self.parse_img)
 
     def parse_img(self, response: HtmlResponse):
-        print(1, end = '\n\n\n')
+        name_img = response.xpath('//h1/text()').get()
 
 
 
