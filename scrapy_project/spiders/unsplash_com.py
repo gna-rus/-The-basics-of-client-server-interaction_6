@@ -2,7 +2,7 @@ import scrapy
 from scrapy.http import HtmlResponse # Импортирую методы типа HtmlResponse
 from pprint import pprint
 from scrapy import Selector
-from scrapy_project.items import JobparserItem
+from jobparser.items import JobparserItem
 from scrapy.loader import ItemLoader
 
 class UnsplashComSpider(scrapy.Spider):
@@ -44,6 +44,7 @@ class UnsplashComSpider(scrapy.Spider):
 
         # передаем loader в pipelines
         yield loader.load_item()
+
 
 
 

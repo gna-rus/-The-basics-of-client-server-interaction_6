@@ -19,7 +19,6 @@ def correct_text_del_word(value):
     return value
 
 def correct_url(value:str):
-    print()
     return value.split(" ")[0]
 
 class JobparserItem(scrapy.Item):
@@ -30,7 +29,6 @@ class JobparserItem(scrapy.Item):
     loggin_of_author = scrapy.Field(input_processor=MapCompose(correct_text_del_word), output_processor=TakeFirst())
     Published_datatime = scrapy.Field(output_processor=TakeFirst())
     url_img = scrapy.Field(input_processor=MapCompose(correct_url), output_processor=TakeFirst())
-    print()
 
 
 
