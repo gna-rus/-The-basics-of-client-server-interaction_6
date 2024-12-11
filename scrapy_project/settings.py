@@ -13,6 +13,7 @@ SPIDER_MODULES = ["scrapy_project.spiders"] # список всех пауков
 NEWSPIDER_MODULE = "scrapy_project.spiders" # локация для пауков
 LOG_ENABLED = True # Включить или нет логирование (обычно False)
 LOG_LEVEL = 'DEBUG' # Уровень логирования
+IMAGES_STORE = 'images' #название дирректроии куда будут скачиваться изображения
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 # Какой юзер агент использовать при парсинге
@@ -67,9 +68,10 @@ COOKIES_ENABLED = True #Использовать или нет куки
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 
 # Включить\выключить pipeline (по умолчанию эти 3 строчки закоментированы)
-# ITEM_PIPELINES = {
-#    "scrapy_project.pipelines.JobparserPipeline": 300,
-# }
+ITEM_PIPELINES = {
+   "scrapy_project.pipelines.JobparserPipeline": 300,
+   "scrapy_project.pipelines.ImagePipeLineRes": 200
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html

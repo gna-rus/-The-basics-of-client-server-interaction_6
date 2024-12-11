@@ -5,8 +5,9 @@
 
 
 # useful for handling different item types with a single interface
+import scrapy
 from itemadapter import ItemAdapter
-
+from scrapy.pipelines.images import ImagesPipeline
 import json
 
 class ScrapyProjectPipeline:
@@ -33,7 +34,7 @@ class JobparserPipeline:
         print(item)
 
         dict1 = {}
-        dict1[item['name'][0]] = [item['cost'], item['url_items']]
+        dict1[item['Published_datatime']] = [item['author'],item['commit'], item['loggin_of_author'], item['url_img']]
 
         # Добавляю данные в json
         with open('result.json', 'a', encoding='utf-8') as file:
@@ -42,3 +43,13 @@ class JobparserPipeline:
 
         return item
 
+class ImagePipeLineRes(ImagesPipeline):
+    def get_media_requests(self, item, info):
+        print(11111, item)
+        if item['url_img']:
+            try:
+                yield scrapy.Request(item['url_img'])
+            except Exception as err:
+                print(err)
+
+        print()
