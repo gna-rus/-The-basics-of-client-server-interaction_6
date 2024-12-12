@@ -9,6 +9,7 @@ import scrapy
 from itemadapter import ItemAdapter
 from scrapy.pipelines.images import ImagesPipeline
 from scrapy.pipelines.images import FilesPipeline
+from pprint import pprint
 
 import json
 import requests
@@ -55,9 +56,11 @@ class ImagePipeLineRes(FilesPipeline):
             yield scrapy.Request(url)
         except Exception as err:
             print(err)
-
         print()
 
+    def item_completed(self, results, item, info):
+        pprint(results)
+        return item
 # class ImagePipeLineRes:
 #     def process_item(self, item, spider):
 #         print('ImagePipeLineRes', item['image_urls'])
