@@ -2,7 +2,7 @@ import scrapy
 from scrapy.http import HtmlResponse # Импортирую методы типа HtmlResponse
 from pprint import pprint
 from scrapy import Selector
-from jobparser.items import JobparserItem
+from scrapy_project.items import JobparserItem
 from scrapy.loader import ItemLoader
 
 class UnsplashComSpider(scrapy.Spider):
@@ -21,6 +21,9 @@ class UnsplashComSpider(scrapy.Spider):
         for link in links:
             yield response.follow(link, callback=self.parse_img)
 
+    def correct_url(self, value):
+        return value.split(" ")[0]
+
     def parse_img(self, response: HtmlResponse):
         # commit = response.xpath('//p[@class="liDlw"]/text()').get()
         # author = response.xpath('//a[@class="vGXaw uoMSP kXLw7 R6ToQ JVs7s R6ToQ"]/text()').get()
@@ -36,13 +39,18 @@ class UnsplashComSpider(scrapy.Spider):
         # формирование пакеда данных для выгрузки с сайта (loader это что то вроде обертки над items)
         # Эта механика является альтернативой для  той что выше в коментах. Особеность ее в том что она разгружаешь pipeline за счет применения обработчиков в items
         loader = ItemLoader(item=JobparserItem(), response=response)
-        loader.add_xpath('commit', '//p[@class="liDlw"]/text()')
-        loader.add_xpath('author', '//a[@class="vGXaw uoMSP kXLw7 R6ToQ JVs7s R6ToQ"]/text()')
-        loader.add_xpath('loggin_of_author', '//a[@class="vGXaw uoMSP kXLw7 R6ToQ JVs7s R6ToQ"]/@href')
-        loader.add_xpath('Published_datatime', '//span[@class="IwfFI jhw7y"]/span/time/text()')
-        loader.add_xpath('url_img', '//img[@class="I7OuT DVW3V L1BOa"]/@srcset')
+        # loader.add_xpath('commit', '//p[@class="liDlw"]/text()')
+        # loader.add_xpath('author', '//a[@class="vGXaw uoMSP kXLw7 R6ToQ JVs7s R6ToQ"]/text()')
+        # loader.add_xpath('loggin_of_author', '//a[@class="vGXaw uoMSP kXLw7 R6ToQ JVs7s R6ToQ"]/@href')
+        # loader.add_xpath('Published_datatime', '//span[@class="IwfFI jhw7y"]/span/time/text()')
+        # loader.add_xpath('image_urls', '//img[@class="I7OuT DVW3V L1BOa"]/@srcset')
+
+
+        image_urls = response.xpath('//img[@class="I7OuT DVW3V L1BOa"]/@srcset').get()
+        loader.add_value('image_urls', self.correct_url(image_urls))
 
         # передаем loader в pipelines
+        print("unsplash.com")
         yield loader.load_item()
 
 

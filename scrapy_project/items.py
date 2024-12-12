@@ -24,12 +24,12 @@ def correct_url(value:str):
 class JobparserItem(scrapy.Item):
     # define the fields for your item here like:
     # output_processor=TakeFirst()
-    commit = scrapy.Field(input_processor=MapCompose(correct_text_strip)) # Обьявляю поля которые надо вытянуть из Паука (смотри hhru, эти переменные есть там)
-    author = scrapy.Field()
-    loggin_of_author = scrapy.Field(input_processor=MapCompose(correct_text_del_word), output_processor=TakeFirst())
-    Published_datatime = scrapy.Field(output_processor=TakeFirst())
-    url_img = scrapy.Field(input_processor=MapCompose(correct_url), output_processor=TakeFirst())
 
-
+    # commit = scrapy.Field(input_processor=MapCompose(correct_text_strip)) # Обьявляю поля которые надо вытянуть из Паука (смотри hhru, эти переменные есть там)
+    # author = scrapy.Field()
+    # loggin_of_author = scrapy.Field(input_processor=MapCompose(correct_text_del_word), output_processor=TakeFirst())
+    # Published_datatime = scrapy.Field(output_processor=TakeFirst())
+    # image_urls = scrapy.Field(input_processor=MapCompose(correct_url), output_processor=TakeFirst())
+    image_urls = scrapy.Field()
 
 
