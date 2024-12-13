@@ -14,6 +14,8 @@ from urllib.parse import urlparse
 from pathlib import Path
 from scrapy.exceptions import DropItem
 from pprint import pprint
+from jobparser.runner import find_query # выгружаю значение переменной, в которой содержится текст поиска
+
 
 class ScrapyProjectPipeline:
     def process_item(self, item, spider):
@@ -31,15 +33,15 @@ class ScrapyProjectPipeline:
 from pymongo import MongoClient
 
 class JobparserPipeline:
-    # def __init__(self):
-    #     client = MongoClient('localhost', 27017) # Инициализирую подключение к БД
-    #     self.mongo_base = client.items05122024 # создаю БД в Манго
+    def __init__(self):
+        client = MongoClient('localhost', 27017) # Инициализирую подключение к БД
+        self.mongo_base = client.items05122024 # создаю БД в Манго
 
     def process_item(self, item, spider):
         """Функция для формирования отчета в json формате"""
         print('JobparserPipeline', item)
         dict1 = {}
-        dict1[item['Published_datatime']] = [item['author'],item['commit'], item['loggin_of_author'], item['image_urls']]
+        dict1[item['Published_datatime']] = [find_query, item['author'],item['commit'], item['loggin_of_author'], item['image_urls']]
 
         # Добавляю данные в json
         with open('result.json', 'a', encoding='utf-8') as file:
@@ -71,7 +73,6 @@ class ImagePipeLineRes(FilesPipeline):
 
 
     def list_files(self, directory):
-        """Функция для вывода на экран количества файлов в дирректории"""
         files = os.listdir(directory)
         for file in files:
             print(file)
