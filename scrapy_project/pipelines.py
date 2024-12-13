@@ -10,6 +10,7 @@ import os
 from itemadapter import ItemAdapter
 from scrapy.pipelines.images import FilesPipeline
 import json
+import csv
 from urllib.parse import urlparse
 from pathlib import Path
 from scrapy.exceptions import DropItem
@@ -98,13 +99,30 @@ class ImagePipeLineRes(FilesPipeline):
             print(f"Файл успешно переименован: '{full_old_filename}' -> '{full_new_filename}'.")
         except FileNotFoundError:
             print(f"Файл '{full_old_filename}' не найден.")
+            return None
         except OSError as e:
             print(f"Произошла ошибка при переименовании файла: {e}")
+            return None
+        result = [dir, new_filename]
+        return result
+
+    def save_in_csv(self, my_info_image):
+        """Функция создания отчета в csv формате"""
+        filename = 'result.csv'
+        with open(filename, mode='a', newline='') as file:
+            # Создаем объект writer
+            writer = csv.DictWriter(file, fieldnames=my_info_image.keys())
+
+            # Записываем данные
+            writer.writerow(my_info_image)
 
     def item_completed(self, results, item, info):
         dir = r'D:\python\pythonScrapy\images\full'
         new_name = self.generate_new_name_file(item['loggin_of_author'] , item['Published_datatime'])
         # self.list_files(dir)
-        self.rename_file(dir, results[0][1]['path'][5:], new_name)
+        result = self.rename_file(dir, results[0][1]['path'][5:], new_name)
+        result.append(find_query)
+        result_dict = {}
+        result_dict[item['loggin_of_author']] = result
+        self.save_in_csv(result_dict)
         return item
-
