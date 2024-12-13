@@ -36,7 +36,8 @@ class JobparserPipeline:
     #     self.mongo_base = client.items05122024 # создаю БД в Манго
 
     def process_item(self, item, spider):
-
+        """Функция для формирования отчета в json формате"""
+        print('JobparserPipeline', item)
         dict1 = {}
         dict1[item['Published_datatime']] = [item['author'],item['commit'], item['loggin_of_author'], item['image_urls']]
 
@@ -48,6 +49,7 @@ class JobparserPipeline:
         return item
 
 class ImagePipeLineRes(FilesPipeline):
+    """Функция для скачивания файлов"""
     def get_media_requests(self, item, info):
         url = item['image_urls'][0]
         print(type(url), url)
@@ -57,12 +59,32 @@ class ImagePipeLineRes(FilesPipeline):
             print(err)
         print()
 
+    def generate_new_name_file(self, loggin, data):
+        """Функция для фильтрации и генерации нового названия"""
+        print(loggin, data)
+        timer_name = loggin+'_' +data
+        new_name = ''
+        for i in timer_name:
+            if i not in '()@#$%^&!*?><{}[];:,. ':
+                new_name += i
+        return new_name
+
+
     def list_files(self, directory):
+        """Функция для вывода на экран количества файлов в дирректории"""
         files = os.listdir(directory)
         for file in files:
             print(file)
 
+
     def rename_file(self, dir, old_filename, new_filename):
+        """
+        Функция для изменения хэшированных имен файла
+        :param dir: дирректория в которой находятся файл для переименовывания
+        :param old_filename: хэшированное имя файла
+        :param new_filename: новое имя файла
+        :return: None
+        """
         full_old_filename = dir+"\\"+old_filename
         full_new_filename = dir+"\\"+new_filename+'.jpeg'
         print(full_new_filename)
@@ -80,9 +102,8 @@ class ImagePipeLineRes(FilesPipeline):
 
     def item_completed(self, results, item, info):
         dir = r'D:\python\pythonScrapy\images\full'
-        print(results)
-        print('___', results[0][1]['path'][5:])
-        self.list_files(dir)
-        self.rename_file(dir, results[0][1]['path'][5:], results[0][1]['path'][5:10])
+        new_name = self.generate_new_name_file(item['loggin_of_author'] , item['Published_datatime'])
+        # self.list_files(dir)
+        self.rename_file(dir, results[0][1]['path'][5:], new_name)
         return item
 
