@@ -7,13 +7,15 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = "scrapy_project" # просто имя проекта
+BOT_NAME = "jobparser" # просто имя проекта
 
-SPIDER_MODULES = ["scrapy_project.spiders"] # список всех пауков проекта
-NEWSPIDER_MODULE = "scrapy_project.spiders" # локация для пауков
+SPIDER_MODULES = ["jobparser.spiders"] # список всех пауков проекта
+NEWSPIDER_MODULE = "jobparser.spiders" # локация для пауков
 LOG_ENABLED = True # Включить или нет логирование (обычно False)
 LOG_LEVEL = 'DEBUG' # Уровень логирования
-FILES_STORE = 'image' #название дирректроии куда будут скачиваться изображения
+IMAGES_STORE = 'D:\python\pythonScrapy\images' #название дирректроии куда будут скачиваться изображения
+FILES_STORE = 'D:\python\pythonScrapy\images'
+
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 # Какой юзер агент использовать при парсинге
@@ -35,7 +37,7 @@ DOWNLOAD_DELAY = 3 # Время задержки между пачками за�
 #CONCURRENT_REQUESTS_PER_IP = 16
 
 # Disable cookies (enabled by default)
-COOKIES_ENABLED = True #Использовать или нет куки
+COOKIES_ENABLED = False #Использовать или нет куки
 
 # Disable Telnet Console (enabled by default)
 #TELNETCONSOLE_ENABLED = False
@@ -49,13 +51,13 @@ COOKIES_ENABLED = True #Использовать или нет куки
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    "scrapy_project.middlewares.JobparserSpiderMiddleware": 543,
+#    "jobparser.middlewares.JobparserSpiderMiddleware": 543,
 #}
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
-#    "scrapy_project.middlewares.JobparserDownloaderMiddleware": 543,
+#    "jobparser.middlewares.JobparserDownloaderMiddleware": 543,
 #}
 
 # Enable or disable extensions
@@ -69,8 +71,8 @@ COOKIES_ENABLED = True #Использовать или нет куки
 
 # Включить\выключить pipeline (по умолчанию эти 3 строчки закоментированы)
 ITEM_PIPELINES = {
-   # "scrapy_project.pipelines.JobparserPipeline": 300,
-   "scrapy_project.pipelines.ImagePipeLineRes": 200
+   # "jobparser.pipelines.JobparserPipeline": 300,
+   "jobparser.pipelines.ImagePipeLineRes": 200
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
