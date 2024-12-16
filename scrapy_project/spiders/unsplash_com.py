@@ -9,6 +9,7 @@ class UnsplashComSpider(scrapy.Spider):
     name = "unsplash_com"
     allowed_domains = ["unsplash.com"]
 
+
     def __init__(self, query=None):
         super().__init__()
         self.start_urls = [f"https://unsplash.com/s/photos/{query}"]
