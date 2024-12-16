@@ -124,5 +124,5 @@ class ImagePipeLineRes(FilesPipeline):
         result.append(find_query)
         result_dict = {}
         result_dict[item['loggin_of_author']] = result
-        self.save_in_csv(result_dict)
+        self.save_in_csv(result_dict) # g
         return item
